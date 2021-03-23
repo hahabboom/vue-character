@@ -1,0 +1,42 @@
+<template>
+  <div class="demo1">
+    <input type="text" :value="text" @input="$emit('change', $event.target.value)">
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'messageDemo',
+  model: {
+    prop: 'text',
+    event: 'change'
+  },
+  data () {
+    return {
+    }
+  },
+  props: ['text'],
+  watch: {},
+  methods: {},
+  computed: {},
+  created () {
+  },
+  mounted () {
+  }
+}
+</script>
+
+<style scoped>
+.demo1{
+  display: flex;
+  height: 90px;
+  align-items: center;
+  background-color: #E4C6BB;
+}
+.demo1Inner{
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: #9D8488;
+}
+</style>
