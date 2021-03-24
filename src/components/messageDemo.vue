@@ -1,7 +1,11 @@
 <template>
   <div class="demo1">
     <input type="text" :value="text" @input="$emit('change', $event.target.value)">
+<!--    <input type="text" :value="text">-->
   </div>
+<!--<div>-->
+<!--&lt;!&ndash;  <input type="text" v-model="text">&ndash;&gt;-->
+<!--</div>-->
 </template>
 
 <script>

@@ -4,21 +4,20 @@
     <ul>
       <li>1. v-model双向绑定</li>
       <li>{{name}}</li>
-      <li><message-demo v-model="name"></message-demo></li>
+      <li><message-demo :text="name" @change="name = $event"></message-demo></li>
+<!--      <li><message-demo v-model="name"></message-demo></li>-->
       <li>2. slot</li>
       <li><slot-demo1>{{slotMsg}}</slot-demo1></li>
-      <li><slot-demo2 v-slot:slotData></slot-demo2></li>
     </ul>
   </div>
 </template>
 
 <script>
-import MessageDemo from "./messageDemo";
-import SlotDemo1 from "./slotDemo1";
-import SlotDemo2 from "./slotDemo2";
+import MessageDemo from './messageDemo'
+import SlotDemo1 from './slotDemo1'
 export default {
   name: 'mainBody',
-  components: { SlotDemo2, SlotDemo1, MessageDemo },
+  components: { SlotDemo1, MessageDemo },
   data () {
     return {
       name: '123',

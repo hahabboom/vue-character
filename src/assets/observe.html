@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue响应式原理</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+  function updateView () {
+    console.log('更新啦!')
+  }
+
+  // 避免污染全局原型
+  const oldArray = Array.prototype
+
+  const newArray = Object.create(oldArray);
+
+  ['pop','push'].forEach(name => {
+    newArray[name] = function () {
+      updateView()
+      oldArray[name].call(this, ...arguments)
+    }
+  })
+
+  function defineObserve (target, key, value) {
+    /**深度监听
+     * 否则value如果是对象将无法被监听
+     */
+    observer(value)
+    Object.defineProperty(target, key, {
+      get: function () {
+        return value
+      },
+      set: function (newval) {
+        if (newval !== value) {
+
+          /**深度监听（如果不监听设置新值，将会监听不到的情况）
+           * 比如 刚开始data.name = 'hahabboom'
+           * data.name = {number: 12}
+           * data.name.number = 1
+           * 最后一次number改变将无法被监听
+           */
+          observer(newval)
+
+          value = newval
+          updateView()
+        }
+      }
+    })
+  }
+
+  function observer (target) {
+    if (typeof target === null || typeof target !== 'object') {
+      return target
+    }
+    if (Array.isArray(target)) {
+      target.__proto__ = newArray
+    }
+    for(let key in target) {
+      defineObserve(target, key, target[key])
+    }
+  }
+
+  let data = {
+    name: 'hahabboom',
+    age: 11,
+    info: {
+      detail: 'hi you!!'
+    },
+    part: ['one', 'two', 'three']
+  }
+  observer(data)
+
+  // data.name = '231'
+  // data.age = 1
+  // data.info.detail = 'change'
+  // data.name = {number: 12}
+  // data.name.number = 1
+  data.part.push(1)
+  data.part.push(3)
+
+
+</script>
+</html>
