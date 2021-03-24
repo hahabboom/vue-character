@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ProxyDemo</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+  function reactive (target={}) {
+    if (typeof target !== 'object' || target == null) {
+      return target
+    }
+    const proxyConf = {
+      get (target, key, receiver) {
+        let result = Reflect.get(target, key, receiver)
+        console.log('get', key)
+        return result
+      },
+      set (target, key, val, receiver) {
+        let result = Reflect.set(target, key, val, receiver)
+        console.log('set', key, val)
+        return result
+      },
+      deleteProperty (target, key) {
+        let result = Reflect.defineProperty(target, key)
+        console.log('delete', key)
+        return result
+      }
+    }
+    let observed = new Proxy(target, proxyConf)
+    return observed
+  }
+
+  const data = {
+    name: 'hahabboom',
+    age: 12,
+    info: {
+      msg: 'say hi!',
+      ad: '123123',
+      part: {
+        say: 'hello'
+      }
+    },
+    partner: [1,2,3,4]
+  }
+  const m = reactive(data)
+
+  // const pData = new Proxy({
+  //   name: 'hahabboom',
+  //   age: 12,
+  //   info: {
+  //     msg: 'say hi!',
+  //     ad: '123123',
+  //     part: {
+  //       say: 'hello'
+  //     }
+  //   },
+  //   partner: [1,2,3,4]
+  // }, {
+  //   get(target, key, receiver){
+  //     console.log('get', key)
+  //     const result = Reflect.get(target, key, receiver)
+  //     return result
+  //   },
+  //   set(target, key, val, receiver){
+  //     const result = Reflect.set(target, key, val, receiver)
+  //     console.log('set', key, val)
+  //     return result
+  //   },
+  //   deleteProperty(target, key) {
+  //     const result = Reflect.deleteProperty(target, key)
+  //     console.log('delete property', key)
+  //     return result
+  //   }
+  // })
+
+</script>
+</html>
