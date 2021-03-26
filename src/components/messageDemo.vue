@@ -1,5 +1,6 @@
 <template>
   <div class="demo1">
+    <div>{{msg2}}</div>
     <input type="text" :value="text" @input="$emit('change', $event.target.value)">
 <!--    <input type="text" :value="text">-->
   </div>
@@ -19,7 +20,7 @@ export default {
     return {
     }
   },
-  props: ['text'],
+  props: ['text', 'msg2'],
   watch: {},
   methods: {},
   computed: {},
