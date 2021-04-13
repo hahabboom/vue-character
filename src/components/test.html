@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+
+<script type="text/javascript">
+  function my_new () {
+    var obj = {}
+    let fun = [].shift.call(arguments)
+    obj.__proto__ = fun.prototype
+    let result = fun.apply(obj, arguments)
+    return typeof obj === 'object' ? result : obj
+  }
+
+  function my_instanceof (left, right) {
+    let prototype = right.prototype
+    left = left.__proto__
+    while (true) {
+      if (left === null) {
+        return false
+      }
+      if (prototype === left) {
+        return true
+      }
+      left = left.__proto__
+    }
+  }
+
+  Function.prototype.my_call = function (context) {
+    var context = context || window
+    context.fn = this
+    var args = [...arguments].slice(1)
+    var result = context.fn(...args)
+    delete context.fn
+    return result
+  }
+
+  Function.prototype.my_apply = function (context) {
+    var context = context || window
+    context.fn = this
+    var args = [...arguments].slice(1)
+    if (arguments[1]) {
+      result = context.fn(...arguments[1])
+    } else {
+      result = context.fn()
+    }
+    delete context.fn
+    return result
+  }
+
+  Function.prototype.my_bind = function (context) {
+    if (typeof this !== 'function') {
+      throw new TypeError('error')
+    }
+    var that = this
+    var args = [...arguments].slice(1)
+    return function F() {
+      if (this instanceof F) {
+        return new _this()
+      }
+    }
+  }
+</script>
+</html>
